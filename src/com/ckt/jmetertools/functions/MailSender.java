@@ -125,7 +125,7 @@ public class MailSender {
             if(mailInfo.getAttachFileNames().length != 0){
                 for(String attachFile : mailInfo.getAttachFileNames()){
                     bodyPart=new MimeBodyPart();  
-                    FileDataSource fds=new FileDataSource(attachFile); //得到数据源  
+                    MyFileDataSource fds=new MyFileDataSource(attachFile); //得到数据源  
                     bodyPart.setDataHandler(new DataHandler(fds)); //得到附件本身并放入BodyPart  
                     bodyPart.setFileName(MimeUtility.encodeText(fds.getName()));  //得到文件名并编码（防止中文文件名乱码）同样放入BodyPart  
                     multiPart.addBodyPart(bodyPart);  
