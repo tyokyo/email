@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class MailTest {
+public class MailTestArgs {
 	public static String readHtml(String htmlpath){
 		StringBuffer content = new StringBuffer();
 		FileReader fr;
@@ -28,11 +28,11 @@ public class MailTest {
 public static void main(String[] args) throws Exception {
 	MailSender mailSender = MailSender.getInstance();
 	
-	String to = "qiang.zhang@ck-telecom.com";
-	String cc = "qiang.zhang@ck-telecom.com";
-	String subject = "test";
-	String attach =  "";
-	String html =  "D:\\soft\\workspace\\workspace4\\jtlparser\\report\\result.html";
+	String to = args[0];
+	String cc = args[1];
+	String subject = args[2];
+	String attach =  args[3];
+	String html =  args[4];
 
 	MailInfo info = new MailInfo();
 	info.setMailHost("hwsmtp.qiye.163.com");

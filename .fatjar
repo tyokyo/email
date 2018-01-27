@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Wed Jan 24 16:59:20 CST 2018
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=email_fat.jar
+manifest.mergeall=true
+manifest.mainclass=com.ckt.jmetertools.functions.MailTest
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=

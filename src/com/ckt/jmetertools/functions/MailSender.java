@@ -1,5 +1,6 @@
 package com.ckt.jmetertools.functions;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
@@ -122,16 +123,19 @@ public class MailSender {
             bodyPart.setContent(mailInfo.getContent(), "text/html; charset=utf-8");
             multiPart.addBodyPart(bodyPart);
             //添加附件
-            if(mailInfo.getAttachFileNames().length != 0){
-                for(String attachFile : mailInfo.getAttachFileNames()){
-                    bodyPart=new MimeBodyPart();  
-                    MyFileDataSource fds=new MyFileDataSource(attachFile); //得到数据源  
-                    bodyPart.setDataHandler(new DataHandler(fds)); //得到附件本身并放入BodyPart  
-                    bodyPart.setFileName(MimeUtility.encodeText(fds.getName()));  //得到文件名并编码（防止中文文件名乱码）同样放入BodyPart  
-                    multiPart.addBodyPart(bodyPart);  
-                }
-            }
-
+            if (mailInfo.getAttachFileNames()!=null) {
+            	 if(mailInfo.getAttachFileNames().length != 0){
+                     for(String attachFile : mailInfo.getAttachFileNames()){
+                         bodyPart=new MimeBodyPart();  
+                         if (new File(attachFile).exists()) {
+                        	 MyFileDataSource fds=new MyFileDataSource(attachFile); //得到数据源  
+                             bodyPart.setDataHandler(new DataHandler(fds)); //得到附件本身并放入BodyPart  
+                             bodyPart.setFileName(MimeUtility.encodeText(fds.getName()));  //得到文件名并编码（防止中文文件名乱码）同样放入BodyPart  
+                             multiPart.addBodyPart(bodyPart);  
+						}
+                     }
+                 }
+			}
             // 设置邮件消息的主要内容
             mailMessage.setContent(multiPart);
             mailMessage.saveChanges();
@@ -189,5 +193,29 @@ public class MailSender {
         info.setContent("中文编码测试，看是不是乱码");
         info.setAttachFileNames(new String[]{"D:\\soft\\Jmeter\\demo\\lib\\activation.jar"});//添加附件
         return info;
+    }
+    public static void main(String args[]) throws Exception{
+    	MailSender mailSender = MailSender.getInstance();
+    	
+    	MailInfo info = new MailInfo();
+    	info.setMailHost("smtp.163.com");
+    	info.setMailPort("465");
+    	info.setUsername("lolopiao@163.com");
+    	info.setPassword("Baidu@piao");
+    	
+    	info.setNotifyTo("qiang.zhang@ck-telecom.com");
+    	info.setNotifyCc("zhangqiang502502@163.com");
+    	info.setSubject("java send mail test");
+    	
+    	/*MailInfo info = new MailInfo();
+    	info.setMailHost("hwsmtp.qiye.163.com");
+    	info.setMailPort("465");
+    	info.setUsername("qiang.zhang@ck-telecom.com");
+    	info.setPassword("zhangqiang@9090");
+    	info.setNotifyTo("qiang.zhang@ck-telecom.com");
+    	info.setNotifyCc("tyokyo@126.com;qiang.zhang502502@163.com");
+    	info.setSubject("java send mail test");*/
+    	info.setContent("sadasas");
+    	mailSender.sendHtmlMail(info, 3);
     }
 }
